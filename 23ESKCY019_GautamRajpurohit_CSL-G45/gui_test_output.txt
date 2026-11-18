@@ -1,0 +1,20 @@
+==============================================================================
+ GUI END-TO-END TESTS (real Tkinter window, Xvfb display)
+==============================================================================
+[GUI-01] Create vault via UI                              PASS
+        -> vault created through the real UI; entry appears in the table
+[GUI-02] Wrong password rejected in UI                    PASS
+        -> wrong master password -> error dialog, vault stays locked
+[GUI-03] Brute-force throttle in UI                       PASS
+        -> after repeated failures even the correct password is refused until the wait expires
+[GUI-04] Auto-lock on inactivity (5 s test timeout)       PASS
+        -> activity at 2.5 s postponed the lock; 5 s of silence then locked the UI and dropped records
+[GUI-05] Clipboard auto-clear (3 s test timeout)          PASS
+        -> password was on the real Tk clipboard, then wiped 3 s later (test timeout)
+[GUI-06] Lock flushes clipboard                           PASS
+        -> pressing Lock wipes a pending clipboard secret immediately
+[GUI-07] Tampered vault file detected in UI               PASS
+        -> tampered file -> 'Integrity alert' shown and the app locks itself
+==============================================================================
+ 7/7 GUI TESTS PASSED
+==============================================================================

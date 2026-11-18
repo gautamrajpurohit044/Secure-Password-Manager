@@ -1,0 +1,3 @@
+cryptography>=42.0.0
+# Tkinter is part of the standard Python installer (on Debian/Ubuntu: sudo apt install python3-tk)
+# Only needed to regenerate figures/report: matplotlib pillow weasyprint pypdf

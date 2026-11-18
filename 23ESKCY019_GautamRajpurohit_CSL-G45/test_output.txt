@@ -1,0 +1,30 @@
+==============================================================================
+ SECURE PASSWORD MANAGER - SECURITY TEST SUITE  (CSL-G45, 7CS4-22)
+==============================================================================
+[TC-01] Vault creation / PBKDF2 key derivation         PASS  (121 ms)
+        -> salt=16 B, iterations=600000, master password absent from file, create took 121 ms
+[TC-02] AES-256-GCM entry round-trip, unique nonces    PASS  (105 ms)
+        -> 3 entries decrypt correctly; 3 distinct 96-bit nonces; no site/username/password in plaintext on disk
+[TC-03] Wrong master password rejected                 PASS  (337 ms)
+        -> wrong password -> False (verifier tag mismatch); correct password -> unlocked
+[TC-04] Ciphertext bit-flip tampering detected         PASS  (240 ms)
+        -> 1 flipped bit in an entry -> InvalidTag raised, nothing decrypted
+[TC-05] Entry-swap (record substitution) detected via AAD PASS  (224 ms)
+        -> bodies swapped between two records -> InvalidTag (entry id is bound as AAD)
+[TC-06] CSPRNG generator: classes, uniqueness, entropy PASS  (27 ms)
+        -> 500/500 unique, every class present; pool=87, 20 chars -> 128.86 bits
+[TC-07] Auto-lock timer + key zeroisation              PASS  (121 ms)
+        -> 60 s countdown, activity resets it; lock() zeroes the 32-byte key buffer and blocks access
+[TC-08] Clipboard auto-clear (15 s) with simulated clipboard PASS  (0 ms)
+        -> secret survives 14 s, cleared at 15 s; a newer user clipboard is NOT wiped
+[TC-09] Brute-force throttle after failed unlocks      PASS  (0 ms)
+        -> free attempts: 2; 3rd failure waits 2s, 4th waits 4s, doubling to a 60 s cap
+[TC-10] Change master password re-keys everything      PASS  (617 ms)
+        -> wrong current pw refused; new salt + new nonces; old password dead, new works, data kept
+[TC-11] Edit entry -> fresh nonce; delete works        PASS  (101 ms)
+        -> re-encrypted with a new nonce on edit; deletion persists
+[TC-12] Weak master password refused                   PASS  (0 ms)
+        -> password shorter than 12 characters rejected at creation
+==============================================================================
+ 12/12 TESTS PASSED
+==============================================================================
